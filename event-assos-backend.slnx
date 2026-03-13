@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="EventAssos.API/EventAssos.API.csproj" />
+  <Project Path="EventAssos.Application/EventAssos.Application.csproj" Id="adeefe1e-337e-4c97-8906-d9d903d34318" />
+  <Project Path="EventAssos.Domain/EventAssos.Domain.csproj" Id="d185d9b7-8da4-4963-8acb-8cdc0e07fc83" />
+  <Project Path="EventAssos.Infrastructure/EventAssos.Infrastructure.csproj" Id="97c1f242-ab79-49bf-bfa0-4c461482e104" />
 </Solution>
