@@ -2,7 +2,7 @@
 
 namespace EventAssos.Application.DTOs.Requests
 {
-    internal class RegisterMemberRequestDTO
+    public class RegisterMemberRequestDTO
     {
     [Required(ErrorMessage = "L'email est requis.")]
     [EmailAddress(ErrorMessage = "Le format est incorrect.")]

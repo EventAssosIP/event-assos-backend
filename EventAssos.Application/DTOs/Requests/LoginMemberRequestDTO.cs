@@ -2,7 +2,7 @@
 
 namespace EventAssos.Application.DTOs.Requests
 {
-    internal class LogginRequestDTO
+    public class LoginMemberRequestDTO
     {
     [Required(ErrorMessage = "L'email est requise.")]
     public string Email { get; set; } = null!;

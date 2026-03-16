@@ -6,22 +6,22 @@ namespace EventAssos.Domain.Entities
 {
     public class Member
     {
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
         [Required]
-        public string? Pseudo { get; private set; }
+        public string? Pseudo { get; set; } = null!;
 
         [Required]
-        public EmailAddress EmailAddress { get; private set; }
+        public EmailAddress EmailAddress { get; set; }
 
         [Required]
-        public Password Password { get; private set; }
+        public Password Password { get; set; }
 
-        public DateTime Birthdate { get; private set; }
+        public DateTime Birthdate { get; set; }
 
-        public Gender Gender { get; private set; }
+        public Gender Gender { get; set; }
 
         [Required]
-        public Role Role { get; private set; }
+        public Role Role { get; set; }
     }
 }
