@@ -2,18 +2,30 @@
 
 namespace EventAssos.Domain.ValueObjects
 {
-    public struct EmailAddress
+    public sealed record EmailAddress
     {
-        private readonly Regex EmailRegex =
-            new(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", RegexOptions.Singleline);
+        private static readonly Regex EmailRegex =
+            new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
+
         public string Value { get; }
 
-        public EmailAddress(string value)
+        private EmailAddress(string value)
         {
-            if (string.IsNullOrWhiteSpace(value) || !EmailRegex.IsMatch(value))
-                throw new ArgumentNullException("Unvalid email address");
-
             Value = value;
         }
+
+        public static EmailAddress Create(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Email cannot be empty", nameof(value));
+
+            if (!EmailRegex.IsMatch(value))
+                throw new ArgumentException("Invalid email format", nameof(value));
+
+            return new EmailAddress(value);
+        }
+
+        public override string ToString() => Value;
     }
 }
+

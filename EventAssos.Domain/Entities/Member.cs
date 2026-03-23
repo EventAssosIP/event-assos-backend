@@ -9,19 +9,19 @@ namespace EventAssos.Domain.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public string? Pseudo { get; set; } = null!;
+        public required string Pseudo { get; set; } = null!;
 
         [Required]
-        public EmailAddress EmailAddress { get; set; }
+        public required EmailAddress EmailAddress { get; set; }
 
         [Required]
-        public Password Password { get; set; }
+        public required PasswordHash Password { get; set; }
 
         public DateTime Birthdate { get; set; }
 
         public Gender Gender { get; set; }
 
         [Required]
-        public Role Role { get; set; }
+        public required Role Role { get; set; }
     }
 }

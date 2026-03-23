@@ -1,23 +1,24 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace EventAssos.Domain.ValueObjects
+namespace EventAssos.Domain.ValueObjects;
+
+public sealed record Password
 {
-    public struct Password
+    private static readonly Regex Regex =
+        new(@"^(?=.*[A-Z])(?=.*\d).{8,}$", RegexOptions.Compiled);
+
+    public string Value { get; }
+
+    private Password(string value) => Value = value;
+
+    public static Password Create(string value)
     {
-        private static readonly Regex PasswordRegex =
-            new(@"^(?=.*[A-Z])(?=.*\d).{8,}$", RegexOptions.Compiled);
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException("Password cannot be empty", nameof(value));
 
-        public string Value { get; }
+        if (!Regex.IsMatch(value))
+            throw new ArgumentException("Password must contain at least 8 characters, one uppercase letter and one number", nameof(value));
 
-        public Password(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Password cannot be empty");
-
-            if (!PasswordRegex.IsMatch(value))
-                throw new ArgumentException("Password must contain at least 8 characters, one uppercase letter and one number");
-
-            Value = value;
-        }
+        return new Password(value);
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace EventAssos.Application.Interfaces.Services.Tools
+﻿using EventAssos.Domain.ValueObjects;
+
+namespace EventAssos.Application.Interfaces.Services.Tools
 { 
     public interface IPasswordHasherService
     {
-        string HashPassword(string password);
-        bool VerifyPassword(string password, string storedPassword);
+        string HashPassword(PasswordHash password);
+        bool VerifyPassword(PasswordHash password, PasswordHash storedPassword);
     }
 }

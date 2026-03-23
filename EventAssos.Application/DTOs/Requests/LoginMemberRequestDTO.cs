@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EventAssos.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace EventAssos.Application.DTOs.Requests
 {
     public class LoginMemberRequestDTO
     {
     [Required(ErrorMessage = "L'email est requise.")]
-    public string Email { get; set; } = null!;
+    public required EmailAddress Email { get; set; }
 
     [Required(ErrorMessage = "Le mot de passe est requis.")]
-    public string Password { get; set; } = null!;
+    public required PasswordHash Password { get; set; }
     }
 }

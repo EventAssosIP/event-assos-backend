@@ -16,9 +16,6 @@ namespace EventAssos.Application.Services.Auth
     {
         public async Task<LoginMemberResponseDto> Login(LoginMemberRequestDTO credentials)
         {
-            if (string.IsNullOrWhiteSpace(credentials.Email) || string.IsNullOrWhiteSpace(credentials.Password))
-                throw new ArgumentException("Email et mot de passe sont requis");
-
             var member = await _memberRepository.GetMemberByEmail(credentials.Email);
             if (member == null || !_passwordHasherService.VerifyPassword(credentials.Password, member.Password))
                 throw new UnauthorizedAccessException("Email ou mot de passe incorrect");
@@ -39,7 +36,7 @@ namespace EventAssos.Application.Services.Auth
                 Id = Guid.NewGuid(),
                 Pseudo = credentials.Pseudo,
                 EmailAddress = credentials.Email,
-                Password = hashedPassword,
+                Password = new PasswordHash(hashedPassword),
                 Role = Role.User,
             };
 
