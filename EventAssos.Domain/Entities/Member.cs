@@ -17,7 +17,7 @@ namespace EventAssos.Domain.Entities
         [Required]
         public required PasswordHash Password { get; set; }
 
-        public DateTime Birthdate { get; set; }
+        public DateOnly Birthdate { get; set; }
 
         public Gender Gender { get; set; }
 
