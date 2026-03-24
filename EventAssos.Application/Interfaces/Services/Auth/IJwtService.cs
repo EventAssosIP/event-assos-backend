@@ -5,6 +5,6 @@ namespace EventAssos.Application.Interfaces.Services.Auth
 {
     public interface IJwtService
     {
-        Task<LoginMemberResponseDto> GenerateToken(Member member);
+        Task<LoginMemberResponseDTO> GenerateToken(Member member);
     }
 }

@@ -7,7 +7,7 @@ namespace EventAssos.Application.Interfaces.Services.Auth
     public interface IAuthService
     {
         Task<Member> Register(RegisterMemberRequestDTO credentials);
-        Task<LoginMemberResponseDto> Login(LoginMemberRequestDTO credentials);
+        Task<LoginMemberResponseDTO> Login(LoginMemberRequestDTO credentials);
     } 
 }
 

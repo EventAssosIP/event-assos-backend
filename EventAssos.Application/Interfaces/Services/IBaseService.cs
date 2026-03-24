@@ -5,10 +5,10 @@
         where TKey : struct
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity?> GetByIdAsync(Guid id);
+        Task<TEntity?> GetByIdAsync(TKey id);
 
-        Task<TEntity> CreateAsync(TEntity user);
-        Task UpdateAsync(TKey id, TEntity user);
+        Task<TEntity> CreateAsync(TEntity member);
+        Task UpdateAsync(TKey id, TEntity member);
         Task DeleteAsync(TKey id);
     }
 }

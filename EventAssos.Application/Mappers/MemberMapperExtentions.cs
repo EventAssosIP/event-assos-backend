@@ -14,5 +14,10 @@ namespace EventAssos.Application.Mappers
                 EmailAddress = member.EmailAddress,
             };
         }
+
+        public static IEnumerable<MemberResponseDTO> ToMemberResponseDTOs(this IEnumerable<Member> members)
+        {
+            return members.Select(u => u.ToMemberResponseDTO()).ToList();
+        }
     }
 }

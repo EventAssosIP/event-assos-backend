@@ -7,7 +7,7 @@ namespace EventAssos.Application.DTOs.Requests
     {
         [Required(ErrorMessage = "L'email est requis.")]
         [EmailAddress(ErrorMessage = "Le format est incorrect.")]
-        public required EmailAddress Email { get; set; }
+        public required EmailAddress EmailAddress { get; set; }
 
         [Required(ErrorMessage = "Le mot de passe est requis.")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?=&])[A-Za-z\d@$!%*?=&]{8,}$",

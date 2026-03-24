@@ -6,6 +6,6 @@ namespace EventAssos.Application.DTOs.Responses
     {
     public Guid Id { get; set; }
     public string? Pseudo { get; set; }
-    public EmailAddress EmailAddress { get; set; }
+    public EmailAddress? EmailAddress { get; set; }
     }
 }

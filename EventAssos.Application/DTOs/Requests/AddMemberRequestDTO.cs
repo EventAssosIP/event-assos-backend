@@ -16,10 +16,10 @@ namespace EventAssos.Application.DTOs.Requests
         public string? Pseudo { get; private set; }
 
         [Required]
-        public EmailAddress EmailAddress { get; private set; }
+        public EmailAddress? EmailAddress { get; private set; }
 
         [Required]
-        public Password Password { get; private set; }
+        public Password? Password { get; private set; }
 
         public DateTime Birthdate { get; private set; }
 
