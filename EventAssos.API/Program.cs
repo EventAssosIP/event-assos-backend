@@ -1,5 +1,8 @@
+using EventAssos.Application.Services;
+using EventAssos.Infrastructure;
 using EventAssos.API.Extentions;
 using EventAssos.API.Scalar;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,10 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 namespace EventAssos.Application.Interfaces.Repositories
-{
-
-   
-
+{   
     public interface IBaseRepository<TEntity, TKey>
         where TEntity : class
         where TKey : struct
