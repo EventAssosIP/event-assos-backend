@@ -13,7 +13,7 @@ namespace EventAssos.Application.DTOs.Requests
         public Guid Id { get; }
 
         [Required(ErrorMessage = "Le pseudo est requis.")]
-        public string? Pseudo { get; private set; }
+        public required string Pseudo { get; set; }
 
         [Required]
         public EmailAddress? EmailAddress { get; private set; }

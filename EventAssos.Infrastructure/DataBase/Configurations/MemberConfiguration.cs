@@ -30,7 +30,7 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
 
         builder.Property(m => m.Gender)
             .HasConversion<string>() // lisible en DB
-            .HasDefaultValue(Gender.Male);
+            .HasDefaultValue(Gender.Other);
 
         builder.Property(m => m.Role)
             .HasConversion<string>()
@@ -54,7 +54,5 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
                 .HasColumnName("PasswordHash")
                 .IsRequired();
         });
-
-        builder.HasIndex("Email"); // index pour login
     }
 }

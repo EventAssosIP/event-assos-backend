@@ -9,7 +9,7 @@ namespace EventAssos.Domain.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public required string Pseudo { get; set; } = null!;
+        public string? Pseudo { get; set; }
 
         [Required]
         public required EmailAddress EmailAddress { get; set; }
@@ -19,9 +19,9 @@ namespace EventAssos.Domain.Entities
 
         public DateOnly Birthdate { get; set; }
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [Required]
-        public required Role Role { get; set; }
+        public Role? Role { get; set; }
     }
 }

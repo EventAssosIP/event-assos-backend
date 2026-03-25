@@ -22,10 +22,10 @@ namespace EventAssos.Application.Services.Auth
             // Claims standard
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, member.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, member.EmailAddress.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, member.EmailAddress.Value),
 
             // Claims personnalisés
-            new Claim("role", member.Role.ToString())
+            new Claim("role", member.Role.ToString()!)
         };
 
             // Génération du JWT Token
