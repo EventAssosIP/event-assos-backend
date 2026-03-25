@@ -14,9 +14,9 @@ namespace EventAssos.Application.Services.Auth
         IJwtService _jwtService
         ) : IAuthService
     {
-        public async Task<LoginMemberResponseDto> Login(LoginMemberRequestDTO credentials)
+        public async Task<LoginMemberResponseDTO> Login(LoginMemberRequestDTO credentials)
         {
-            var member = await _memberRepository.GetMemberByEmail(credentials.Email);
+            var member = await _memberRepository.GetMemberByEmail(credentials.EmailAddress);
             if (member == null || !_passwordHasherService.VerifyPassword(credentials.Password, member.Password))
                 throw new UnauthorizedAccessException("Email ou mot de passe incorrect");
 
@@ -25,7 +25,7 @@ namespace EventAssos.Application.Services.Auth
 
         public async Task<Member> Register(RegisterMemberRequestDTO credentials)
         {
-            var existingUser = await _memberRepository.GetMemberByEmail(credentials.Email);
+            var existingUser = await _memberRepository.GetMemberByEmail(credentials.EmailAddress);
             if (existingUser != null)
                 throw new InvalidOperationException("L'email est déjà utilisée");
 
@@ -35,7 +35,7 @@ namespace EventAssos.Application.Services.Auth
             {
                 Id = Guid.NewGuid(),
                 Pseudo = credentials.Pseudo,
-                EmailAddress = credentials.Email,
+                EmailAddress = credentials.EmailAddress,
                 Password = new PasswordHash(hashedPassword),
                 Role = Role.User,
             };
