@@ -23,5 +23,7 @@ namespace EventAssos.Domain.Entities
 
         [Required]
         public Role? Role { get; set; }
+
+        public DateTime CreatedAt { get; } = DateTime.Now;
     }
 }

@@ -5,17 +5,17 @@ namespace EventAssos.Application.DTOs.Requests
 {
     public class RegisterMemberRequestDTO
     {
-        [Required(ErrorMessage = "L'email est requis.")]
-        [EmailAddress(ErrorMessage = "Le format est incorrect.")]
+        [Required(ErrorMessage = "Email is required !")]
+        [EmailAddress(ErrorMessage = "Invalid format !")]
         public required EmailAddress EmailAddress { get; set; }
 
-        [Required(ErrorMessage = "Le mot de passe est requis.")]
+        [Required(ErrorMessage = "Password is required !")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?=&])[A-Za-z\d@$!%*?=&]{8,}$",
-            ErrorMessage = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial")]
+            ErrorMessage = "Password must contain at least 8 characters, one uppercase letter and one number !")]
         public required PasswordHash Password { get; set; }
 
-        [Required(ErrorMessage = "Le pseudo est requis.")]
-        [StringLength(25, ErrorMessage = "La longueur maximum doit être comprise entre 2 et 25 caractères", MinimumLength = 2)]
+        [Required(ErrorMessage = "Pseudonim is required !")]
+        [StringLength(25, ErrorMessage = "Pseudonim must contain at least 2 and maximum 25 characters !", MinimumLength = 2)]
         public required string Pseudo { get; set; }
     }
 }

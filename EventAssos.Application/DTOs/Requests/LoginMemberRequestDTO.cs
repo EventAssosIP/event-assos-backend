@@ -5,10 +5,10 @@ namespace EventAssos.Application.DTOs.Requests
 {
     public class LoginMemberRequestDTO
     {
-    [Required(ErrorMessage = "L'email est requise.")]
+    [Required(ErrorMessage = "Email is required !")]
     public required EmailAddress EmailAddress { get; set; }
 
-    [Required(ErrorMessage = "Le mot de passe est requis.")]
+    [Required(ErrorMessage = "Password is required !")]
     public required PasswordHash Password { get; set; }
     }
 }
