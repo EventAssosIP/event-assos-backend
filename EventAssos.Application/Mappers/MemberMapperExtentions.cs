@@ -12,6 +12,7 @@ namespace EventAssos.Application.Mappers
                 Id = member.Id,
                 Pseudo = member.Pseudo,
                 EmailAddress = member.EmailAddress,
+                CreatedAt = member.CreatedAt,
             };
         }
 

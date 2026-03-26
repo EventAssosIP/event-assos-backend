@@ -26,7 +26,7 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
 
         builder.Property(m => m.Birthdate)
             .HasConversion(converter)
-            .HasColumnType("date");
+            .HasColumnType("Date");
 
         builder.Property(m => m.Gender)
             .HasConversion<string>() // lisible en DB
@@ -54,5 +54,8 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
                 .HasColumnName("PasswordHash")
                 .IsRequired();
         });
+
+        builder.Property(m => m.CreatedAt)
+            .IsRequired();
     }
 }

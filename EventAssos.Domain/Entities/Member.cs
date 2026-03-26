@@ -1,29 +1,24 @@
 ﻿using EventAssos.Domain.Enums;
 using EventAssos.Domain.ValueObjects;
-using System.ComponentModel.DataAnnotations;
 
 namespace EventAssos.Domain.Entities
 {
     public class Member
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
-        [Required]
-        public string? Pseudo { get; set; }
+        public string? Pseudo { get; private set; }
 
-        [Required]
-        public required EmailAddress EmailAddress { get; set; }
+        public EmailAddress? EmailAddress { get; private set; }
 
-        [Required]
-        public required PasswordHash Password { get; set; }
+        public PasswordHash? Password { get; private set; }
 
-        public DateOnly Birthdate { get; set; }
+        public DateOnly? Birthdate { get; private set; }
 
-        public Gender? Gender { get; set; }
+        public Gender? Gender { get; private set; }
 
-        [Required]
-        public Role? Role { get; set; }
+        public Role Role { get; private set; }
 
-        public DateTime CreatedAt { get; } = DateTime.Now;
+        public DateTime CreatedAt { get; private set; }
     }
 }
