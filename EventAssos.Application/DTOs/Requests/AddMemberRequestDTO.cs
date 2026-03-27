@@ -10,14 +10,14 @@ namespace EventAssos.Application.DTOs.Requests
         public required string Pseudo { get; set; }
 
         [Required(ErrorMessage = "Email is required !")]
-        public EmailAddress? EmailAddress { get; private set; }
+        public required string EmailAddress { get; set; }
 
         [Required(ErrorMessage = "Password is required !")]
-        public Password? Password { get; private set; }
+        public required string Password { get; set; }
 
         public DateTime Birthdate { get; private set; }
 
-        public Gender Gender { get; private set; }
+        public string Gender { get; private set; } = null!;
     }
 }
 

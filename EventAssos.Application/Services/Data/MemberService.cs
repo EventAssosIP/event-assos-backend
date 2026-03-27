@@ -1,5 +1,4 @@
-﻿
-using EventAssos.Application.Interfaces.Repositories;
+﻿using EventAssos.Application.Interfaces.Repositories;
 using EventAssos.Application.Interfaces.Services;
 using EventAssos.Domain.Entities;
 
@@ -7,9 +6,8 @@ namespace EventAssos.Application.Services.Data
 {
     public class MemberService(IMemberRepository _memberRespository) : IMemberService
     {
-        public async Task<Member> CreateAsync(Member member)
+        public Task<Member> CreateAsync(Member member)
         {
-            // Member
             throw new NotImplementedException();
         }
 

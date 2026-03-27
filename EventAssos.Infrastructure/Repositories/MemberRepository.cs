@@ -8,9 +8,9 @@ namespace EventAssos.Infrastructure.Repositories
 {
     public class MemberRepository(EventAssosContext context) : BaseRepository<Member, Guid>(context), IMemberRepository
     {
-        public async Task<Member?> GetMemberByEmail(EmailAddress email)
+        public async Task<Member?> GetMemberByEmail(string email)
         {
-            return await _entities.FirstOrDefaultAsync(e => e.EmailAddress.Value == email.Value);
+            return await _entities.FirstOrDefaultAsync(e => e.EmailAddress.Value == email);
         }
     }    
 }

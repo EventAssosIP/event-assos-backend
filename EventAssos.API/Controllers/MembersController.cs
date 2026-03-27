@@ -4,6 +4,7 @@ using EventAssos.Application.Mappers;
 using EventAssos.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using EventAssos.Domain.ValueObjects;
 
 namespace EventAssos.API.Controllers
 {
@@ -23,7 +24,7 @@ namespace EventAssos.API.Controllers
             return Ok(member.ToMemberResponseDTOs());
         }
 
-        // GET: api/Members/5
+        // GET:
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(MemberResponseDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
@@ -38,7 +39,7 @@ namespace EventAssos.API.Controllers
             return Ok(existingMember.ToMemberResponseDTO());
         }
 
-        // PUT: api/Users/5
+        // PUT:
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -52,9 +53,9 @@ namespace EventAssos.API.Controllers
 
             var member = await _memberService.GetByIdAsync(id);
             if (member == null)
-                return NotFound(new { Message = "Membre introuvable." });
+                return NotFound(new { Message = "Member not found" });
 
-            member.EmailAddress = request.EmailAddress;
+            member.EmailAddress = EmailAddress.Create(request.EmailAddress);
             member.Pseudo = request.Pseudo;
 
             await _memberService.UpdateAsync(id, member);
@@ -63,7 +64,7 @@ namespace EventAssos.API.Controllers
 
         }
 
-        // DELETE: api/Users/5
+        // DELETE:
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

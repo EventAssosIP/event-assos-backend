@@ -5,20 +5,20 @@ namespace EventAssos.Domain.Entities
 {
     public class Member
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
-        public string? Pseudo { get; private set; }
+        public required string Pseudo { get; set; }
 
-        public EmailAddress? EmailAddress { get; private set; }
+        public required EmailAddress EmailAddress { get; set; }
 
-        public PasswordHash? Password { get; private set; }
+        public required PasswordHash Password { get; set; }
 
-        public DateOnly? Birthdate { get; private set; }
+        public DateOnly Birthdate { get; set; }
 
-        public Gender? Gender { get; private set; }
+        public Gender Gender { get; set; }
 
-        public Role Role { get; private set; }
+        public required Role Role { get; set; } = Role.User;
 
-        public DateTime CreatedAt { get; private set; }
+        public required DateTime CreatedAt { get; set; }
     }
 }

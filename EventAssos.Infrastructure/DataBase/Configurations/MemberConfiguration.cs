@@ -33,8 +33,7 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
             .HasDefaultValue(Gender.Other);
 
         builder.Property(m => m.Role)
-            .HasConversion<string>()
-            .HasDefaultValue(Role.User);
+            .HasConversion<string>();
 
         builder.Property(m => m.EmailAddress)
             .HasConversion(
