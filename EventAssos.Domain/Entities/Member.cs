@@ -20,5 +20,13 @@ namespace EventAssos.Domain.Entities
         public required Role Role { get; set; } = Role.User;
 
         public required DateTime CreatedAt { get; set; }
+
+
+        // Propriété pour EF
+        public string EmailAddressValue
+        {
+            get => EmailAddress.Value;
+            private set => EmailAddress = EmailAddress.Create(value);
+        }
     }
 }

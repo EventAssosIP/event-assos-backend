@@ -10,7 +10,7 @@ namespace EventAssos.Infrastructure.Repositories
     {
         public async Task<Member?> GetMemberByEmail(string email)
         {
-            return await _entities.FirstOrDefaultAsync(e => e.EmailAddress.Value == email);
+            return await _entities.FirstOrDefaultAsync(e => e.EmailAddress == EmailAddress.Create(email));
         }
     }    
 }

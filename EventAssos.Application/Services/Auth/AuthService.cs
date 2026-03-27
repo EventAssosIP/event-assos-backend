@@ -19,7 +19,7 @@ namespace EventAssos.Application.Services.Auth
         {         
             // Récupère le membre
             var member = await _memberRepository.GetMemberByEmail(credentials.EmailAddress);
-            if (member == null || !_passwordHasherService.VerifyPassword(credentials.Password, member.Password.ToString()))
+            if (member == null || !_passwordHasherService.VerifyPassword(credentials.Password, member.Password.Value))
                 throw new UnauthorizedAccessException("Invalid email or password");
 
             return await _jwtService.GenerateToken(member);

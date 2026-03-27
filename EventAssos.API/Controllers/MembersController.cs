@@ -1,51 +1,51 @@
 ﻿using EventAssos.Application.DTOs.Responses;
 using EventAssos.Application.DTOs.Requests;
-using EventAssos.Application.Mappers;
 using EventAssos.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EventAssos.Domain.ValueObjects;
+using EventAssos.Domain.Entities;
 
 namespace EventAssos.API.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
     public class MembersController(IMemberService _memberService) : ControllerBase
     {
+        // ===============================
         // GET: api/Members
+        // ===============================
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MemberResponseDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<MemberResponseDTO>>> GetMembers()
         {
-            var member = await _memberService.GetAllAsync();
-            return Ok(member.ToMemberResponseDTOs());
+            var members = await _memberService.GetAllAsync();
+            return Ok(ToMemberResponseDTOs(members));
         }
 
-        // GET:
+        // ===============================
+        // GET: api/Members/{id}
+        // ===============================
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(MemberResponseDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MemberResponseDTO>> GetMember([FromRoute] Guid id)
         {
-            var existingMember = await _memberService.GetByIdAsync(id);
-            if (existingMember == null)
+            var member = await _memberService.GetByIdAsync(id);
+            if (member == null)
                 return NotFound();
 
-            //return Ok(UserMapperExtensions.ToUserResponseDto(existingUser));
-            return Ok(existingMember.ToMemberResponseDTO());
+            return Ok(ToMemberResponseDTO(member));
         }
 
-        // PUT:
+        // ===============================
+        // PUT: api/Members/{id}
+        // ===============================
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public async Task<IActionResult> PutMember([FromRoute] Guid id, [FromBody] UpdateMemberRequestDTO request)
         {
             if (!ModelState.IsValid)
@@ -61,26 +61,45 @@ namespace EventAssos.API.Controllers
             await _memberService.UpdateAsync(id, member);
 
             return NoContent();
-
         }
 
-        // DELETE:
+        // ===============================
+        // DELETE: api/Members/{id}
+        // ===============================
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteMember([FromRoute] Guid id)
         {
             try
             {
                 await _memberService.DeleteAsync(id);
-                return Ok();
+                return NoContent(); // 🔥 correction REST
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { Error = ex.Message });
             }
         }
+
+        // ===============================
+        // MAPPERS PRIVÉS (autonomes)
+        // ===============================
+
+        private MemberResponseDTO ToMemberResponseDTO(Member member)
+        {
+            return new MemberResponseDTO
+            {
+                Id = member.Id,
+                Pseudo = member.Pseudo,
+                EmailAddress = member.EmailAddress.ToString(),
+                CreatedAt = member.CreatedAt
+            };
+        }
+
+        private IEnumerable<MemberResponseDTO> ToMemberResponseDTOs(IEnumerable<Member> members)
+        {
+            return members.Select(m => ToMemberResponseDTO(m));
+        }
     }
 }
-

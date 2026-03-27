@@ -1,6 +1,4 @@
-﻿using EventAssos.Domain.ValueObjects;
-
-namespace EventAssos.Application.DTOs.Responses
+﻿namespace EventAssos.Application.DTOs.Responses
 {
     public class MemberResponseDTO
     {
