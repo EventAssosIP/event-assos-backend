@@ -2,7 +2,7 @@
 
 namespace EventAssos.Application.Interfaces.Repositories
 {
-    public interface IMemberRepository : IBaseRepository<Member, Guid>
+    public interface IEventRepository : IBaseRepository<Event, Guid>
     {
     }
 }

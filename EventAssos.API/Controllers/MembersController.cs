@@ -74,7 +74,7 @@ namespace EventAssos.API.Controllers
             try
             {
                 await _memberService.DeleteAsync(id);
-                return NoContent(); // 🔥 correction REST
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
