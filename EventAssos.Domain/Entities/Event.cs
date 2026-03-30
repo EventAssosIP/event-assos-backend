@@ -10,9 +10,13 @@ namespace EventAssos.Domain.Entities
 
         public string Description { get; set; } = string.Empty;
 
+        public string Location { get; set; } = string.Empty;
+
         public required DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public Category Category { get; set; }
 
         public int MinParticipants { get; set; }
 

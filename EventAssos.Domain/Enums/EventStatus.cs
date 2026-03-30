@@ -2,8 +2,9 @@
 {
     public enum EventStatus
     {
-        Delated = 0,
-        Active = 1,
-
+        Active = 0,
+        Pending = 1,
+        Delated = 2,
+        Ended = 3,
     }
 }

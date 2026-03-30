@@ -15,6 +15,8 @@ namespace EventAssos.Application.DTOs.Requests
 
         public DateTime EndDate { get; set; }
 
+        public string Category { get; set; } = string.Empty;
+
         public int MinParticipants { get; set; }
 
         public int MaxParticipants { get; set; }
