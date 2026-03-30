@@ -18,7 +18,7 @@ namespace EventAssos.Application.Mappers
 
         public static IEnumerable<MemberResponseDTO> ToMemberResponseDTOs(this IEnumerable<Member> members)
         {
-            return members.Select(u => u.ToMemberResponseDTO()).ToList();
+            return members.Select(m => m.ToMemberResponseDTO()).ToList();
         }
     }
 }
