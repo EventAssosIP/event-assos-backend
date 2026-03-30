@@ -24,6 +24,8 @@ namespace EventAssos.Application.DTOs.Requests
         [Range(1, int.MaxValue)]
         public int MaxParticipants { get; set; }
 
+        public string Status {  get; set; } = string.Empty;
+
         public bool WaitingListActive { get; set; }
 
         [Required]

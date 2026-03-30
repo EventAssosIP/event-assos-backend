@@ -18,7 +18,7 @@
 
         public int MaxParticipants { get; set; }
 
-        public string EventStatus { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
 
         public bool WaitingListActive { get; set; }
 

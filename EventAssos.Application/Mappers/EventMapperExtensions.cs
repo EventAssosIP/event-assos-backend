@@ -35,7 +35,7 @@ namespace EventAssos.Application.Mappers
                 EndDate = entity.EndDate,
                 MinParticipants = entity.MinParticipants,
                 MaxParticipants = entity.MaxParticipants,
-                EventStatus = entity.Status.ToString(),
+                Status = entity.Status.ToString(),
                 WaitingListActive = entity.WaitingListActive,
                 RegistrationDeadline = entity.RegistrationDeadline,
                 CreatedAt = entity.CreatedAt,
