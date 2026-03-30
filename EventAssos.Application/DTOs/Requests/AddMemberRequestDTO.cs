@@ -1,10 +1,8 @@
-﻿using EventAssos.Domain.Enums;
-using EventAssos.Domain.ValueObjects;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EventAssos.Application.DTOs.Requests
 {
-    internal class AddMemberRequestDTO
+    public class AddMemberRequestDTO
     {
         [Required(ErrorMessage = "Pseudonim is required !")]
         public required string Pseudo { get; set; }

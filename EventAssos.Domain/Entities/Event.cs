@@ -1,5 +1,4 @@
 ﻿using EventAssos.Domain.Enums;
-using EventAssos.Domain.ValueObjects;
 
 namespace EventAssos.Domain.Entities
 {
@@ -19,7 +18,7 @@ namespace EventAssos.Domain.Entities
 
         public int MaxParticipants { get; set; }
 
-        public required EventStatus Status { get; set; }
+        public EventStatus Status { get; set; } = EventStatus.Active;
 
         public bool WaitingListActive { get; set; }
 
