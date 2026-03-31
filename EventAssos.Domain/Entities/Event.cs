@@ -31,6 +31,9 @@ namespace EventAssos.Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        private readonly List<Registration> _registrations = new();
+        public IReadOnlyCollection<Registration> Registrations => _registrations;
     }
      
 }

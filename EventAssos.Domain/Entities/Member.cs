@@ -22,6 +22,9 @@ namespace EventAssos.Domain.Entities
         public required DateTime CreatedAt { get; set; }
 
 
+        private readonly List<Registration> _registrations = new();
+        public IReadOnlyCollection<Registration> Registrations => _registrations;
+
         // Propriété pour EF
         public string EmailAddressValue
         {
