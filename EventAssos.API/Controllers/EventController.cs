@@ -10,13 +10,14 @@ namespace EventAssos.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class EventsController(IEventService _eventService) : ControllerBase
     {
         // ===============================
         // GET: api/Events
         // ===============================
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<EventResponseDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<EventResponseDTO>>> GetEvents()
         {
@@ -28,6 +29,7 @@ namespace EventAssos.API.Controllers
         // GET: api/Events/{id}
         // ===============================
         [HttpGet("{id:guid}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(EventResponseDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EventResponseDTO>> GetEvent([FromRoute] Guid id)
@@ -43,6 +45,7 @@ namespace EventAssos.API.Controllers
         // PUT: api/Events/{id}
         // ===============================
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -67,6 +70,7 @@ namespace EventAssos.API.Controllers
         // DELETE: api/Events/{id}
         // ===============================
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEvent([FromRoute] Guid id)
