@@ -4,7 +4,7 @@ using EventAssos.Domain.Entities;
 
 namespace EventAssos.Application.Mappers
 {
-    public static class EventMapperExtension
+    public static class EventMapperExtensions
     {
         public static Event ToEvent(this AddEventRequestDTO request)
         {

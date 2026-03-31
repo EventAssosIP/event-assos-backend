@@ -6,7 +6,7 @@ using EventAssos.Domain.Enums;
 
 namespace EventAssos.Application.Mappers
 {
-    public static class MemberMapperExtentions
+    public static class MemberMapperExtensions
     {
         public static Member ToMember(this AddMemberRequestDTO request)
         {
