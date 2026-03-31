@@ -13,7 +13,7 @@ namespace EventAssos.Infrastructure.DataBase.Context
 
         public DbSet<Member> Members { get; set; } = null!; // nullable désactivé, EF Core s'attend à ce que ce soit initialisé
 
-        // public DbSet<Event> Events { get; set; } = null!;
+        public DbSet<Event> Events { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,15 @@ namespace EventAssos.Infrastructure.DataBase.Context
 
                 entity.Property(m => m.Role)
                       .HasDefaultValue(Domain.Enums.Role.User);
+            });
+
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.Property(e => e.CreatedAt)
+                      .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
+
+                entity.Property(e => e.Status)
+                      .HasDefaultValue(Domain.Enums.EventStatus.InProgress);
             });
         }
     }

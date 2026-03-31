@@ -16,17 +16,17 @@ namespace EventAssos.Domain.Entities
 
         public DateTime EndDate { get; set; }
 
-        public Category Category { get; set; }
+        public Category Category { get; set; } = Category.Other;
 
-        public int MinParticipants { get; set; }
+        public required int MinParticipants { get; set; }
 
         public int MaxParticipants { get; set; }
 
-        public EventStatus Status { get; set; } = EventStatus.Active;
+        public EventStatus Status { get; set; } = EventStatus.InProgress;
 
-        public bool WaitingListActive { get; set; }
+        public bool WaitingListActive { get; set; } = false;
 
-        public required DateTime RegistrationDeadline { get; set; }
+        public DateTime RegistrationDeadline { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
