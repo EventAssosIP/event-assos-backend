@@ -5,6 +5,8 @@ namespace EventAssos.Application.Interfaces.Repositories
 {
     public interface IEventRepository : IBaseRepository<Event, Guid>
     {
-        Task<IEnumerable<Event>> GetEventsByStatusAndDate(EventStatus status, DateTime fromDate);
+        Task<IEnumerable<Event>> GetAllWithRegistrationsAsync();
+
+        Task<Event?> GetByIdWithRegistrationsAsync(Guid eventId);
     }
 }

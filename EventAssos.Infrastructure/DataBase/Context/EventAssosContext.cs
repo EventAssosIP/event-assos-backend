@@ -15,6 +15,8 @@ namespace EventAssos.Infrastructure.DataBase.Context
 
         public DbSet<Event> Events { get; set; } = null!;
 
+        public DbSet<Registration> Registrations { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Applique toutes les configurations de l'assembly
@@ -36,6 +38,15 @@ namespace EventAssos.Infrastructure.DataBase.Context
                       .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
 
                 entity.Property(e => e.Status)
+                      .HasDefaultValue(Domain.Enums.EventStatus.InProgress);
+            });
+
+            modelBuilder.Entity<Registration>(entity =>
+            {
+                entity.Property(e => e.RegisteredAt)
+                      .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
+
+                entity.Property(e => e.)
                       .HasDefaultValue(Domain.Enums.EventStatus.InProgress);
             });
         }

@@ -17,6 +17,7 @@ namespace EventAssos.Infrastructure
 
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            //services.AddScoped<IRegistrationRepository, RegistrationRepository>();
         }
     }
 }

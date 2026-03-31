@@ -1,10 +1,28 @@
-using EventAssos.Application.Services;
-using EventAssos.Infrastructure;
 using EventAssos.API.Extentions;
 using EventAssos.API.Scalar;
+using EventAssos.Application.Interfaces.Services;
+using EventAssos.Application.Interfaces.Services.Tools;
+using EventAssos.Application.Services;
+using EventAssos.Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ----------------------------
+// Lire config SMTP
+// ----------------------------
+var smtpConfig = builder.Configuration.GetSection("Smtp");
+
+builder.Services.AddScoped<IEmailService>(sp =>
+    new SmtpEmailService(
+        smtpConfig["Host"]!,
+        int.Parse(smtpConfig["Port"]!),
+        smtpConfig["User"]!,
+        smtpConfig["Pass"]!,
+        smtpConfig["FromEmail"]!,
+        smtpConfig["FromName"]!
+    )
+);
 
 // ----------------------------
 // Services Core & Infrastructure

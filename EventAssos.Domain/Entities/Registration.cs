@@ -10,12 +10,11 @@
 
         public DateTime RegisteredAt { get; set; }
 
-        // Pour gérer la waiting list
-        // 0 ou null : membre actif
-        // >0 : position dans la liste d'attente
+        public bool IsConfirmed { get; set; }
+
         public int? WaitingPosition { get; set; }
 
-        // Navigation properties optionnelles
+        // Navigation properties
         public Event Event { get; set; } = null!;
         public Member Member { get; set; } = null!;
     }
