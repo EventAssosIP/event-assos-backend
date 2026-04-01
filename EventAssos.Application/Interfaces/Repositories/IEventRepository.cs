@@ -1,5 +1,4 @@
 ﻿using EventAssos.Domain.Entities;
-using EventAssos.Domain.Enums;
 
 namespace EventAssos.Application.Interfaces.Repositories
 {
@@ -8,5 +7,9 @@ namespace EventAssos.Application.Interfaces.Repositories
         Task<IEnumerable<Event>> GetAllWithRegistrationsAsync();
 
         Task<Event?> GetByIdWithRegistrationsAsync(Guid eventId);
+
+        Task<int> GetParticipantCountAsync(Guid eventId);
+
+        Task<IEnumerable<Member>> GetRegisteredMembersAsync(Guid eventId);
     }
 }

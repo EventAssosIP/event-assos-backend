@@ -88,7 +88,7 @@ namespace EventAssos.Application.Services.Data
                 var registeredMembers = await _eventRepository.GetRegisteredMembersAsync(id);
                 foreach (var member in registeredMembers)
                 {
-                    await _emailService.SendEventUpdateNotificationAsync(member.EmailAddress, existingEvent);
+                    await _emailService.SendEventUpdateNotificationAsync(member.EmailAddress.ToString(), existingEvent);
                 }
             }
         }

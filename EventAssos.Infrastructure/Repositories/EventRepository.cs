@@ -5,9 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventAssos.Infrastructure.Repositories
 {
-    public class EventRepository(EventAssosContext context)
-        : BaseRepository<Event, Guid>(context), IEventRepository
+    public class EventRepository : BaseRepository<Event, Guid>, IEventRepository
     {
+        private readonly EventAssosContext _context;
+
+        public EventRepository(EventAssosContext context)
+            : base(context)
+        {
+            _context = context; // Initialisation du contexte
+        }
 
         // Récupère un Event avec toutes ses inscriptions et les membres associés
         public async Task<Event?> GetByIdWithRegistrationsAsync(Guid eventId)

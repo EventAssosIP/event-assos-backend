@@ -46,8 +46,8 @@ namespace EventAssos.Infrastructure.DataBase.Context
                 entity.Property(e => e.RegisteredAt)
                       .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
 
-                entity.Property(e => e.)
-                      .HasDefaultValue(Domain.Enums.EventStatus.InProgress);
+                entity.Property(e => e.IsConfirmed)
+                      .HasDefaultValue(false);
             });
         }
     }
