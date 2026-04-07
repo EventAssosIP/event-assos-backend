@@ -1,5 +1,4 @@
-﻿using EventAssos.Application.Interfaces.Repositories;
-using EventAssos.Infrastructure.DataBase.Context;
+﻿using EventAssos.Infrastructure.DataBase.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

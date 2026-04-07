@@ -77,7 +77,7 @@ namespace EventAssos.Application.Services.Data
             existingEvent.Location = updatedEvent.Location;
             existingEvent.MinParticipants = updatedEvent.MinParticipants;
             existingEvent.MaxParticipants = updatedEvent.MaxParticipants;
-            existingEvent.WaitingListActive = updatedEvent.WaitingListActive;
+            existingEvent.IsWaitingListActive = updatedEvent.IsWaitingListActive;
             existingEvent.RegistrationDeadline = updatedEvent.RegistrationDeadline;
             existingEvent.UpdatedAt = DateTime.UtcNow;
 

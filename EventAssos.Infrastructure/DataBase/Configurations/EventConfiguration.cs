@@ -47,7 +47,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
         builder.HasIndex(e => new { e.Status, e.StartDate });
 
-        builder.Property(e => e.WaitingListActive)
+        builder.Property(e => e.IsWaitingListActive)
             .HasDefaultValue(false);
 
         builder.Property(e => e.CreatedAt)
