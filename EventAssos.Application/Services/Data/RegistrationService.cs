@@ -1,6 +1,7 @@
 ﻿using EventAssos.Application.Interfaces.Repositories;
 using EventAssos.Application.Interfaces.Services;
 using EventAssos.Domain.Entities;
+using EventAssos.Domain.Enums;
 
 namespace EventAssos.Application.Services.Data
 {
@@ -9,25 +10,29 @@ namespace EventAssos.Application.Services.Data
     {
         public async Task<Registration?> RegisterAsync(Guid eventId, Guid memberId)
         {
-            // 1 récupérer l’event avec ses registrations
             var eventEntity = await _eventRepository.GetByIdWithRegistrationsAsync(eventId);
             if (eventEntity == null)
                 throw new KeyNotFoundException("Event not found");
 
-            // 2 vérifier double inscription
-            bool alreadyRegistered = eventEntity.Registrations
-                .Any(r => r.MemberId == memberId);
+            // --- VÉRIFICATIONS RÈGLES MÉTIER ---
 
-            if (alreadyRegistered)
+            // 1. Statut « en attente »
+            if (eventEntity.Status.ToString() != EventStatus.InProgress.ToString())
+                throw new InvalidOperationException("L'événement n'est pas ouvert aux inscriptions.");
+
+            // 2. Date limite non dépassée
+            if (DateTime.UtcNow > eventEntity.RegistrationDeadline)
+                throw new InvalidOperationException("La date limite d'inscription est dépassée.");
+
+            // 3. Pas de double inscription
+            if (eventEntity.Registrations.Any(r => r.MemberId == memberId))
                 throw new InvalidOperationException("Member already registered");
 
-            // 3 compter les participants actifs
-            int activeCount = eventEntity.Registrations
-                .Count(r => r.WaitingPosition == null);
+            // --- LOGIQUE D'INSCRIPTION ---
 
+            int activeCount = eventEntity.Registrations.Count(r => r.WaitingPosition == null);
             Registration registration;
 
-            // 4 place dispo ?
             if (activeCount < eventEntity.MaxParticipants)
             {
                 registration = new Registration
@@ -36,12 +41,16 @@ namespace EventAssos.Application.Services.Data
                     EventId = eventId,
                     MemberId = memberId,
                     RegisteredAt = DateTime.UtcNow,
-                    WaitingPosition = null // inscrit direct
+                    WaitingPosition = null // Inscrit direct
                 };
             }
             else
             {
-                // 5 waiting list
+                // Règle 4 : La liste d'attente doit être active
+                // (Si tu n'as pas ce booléen, retire cette condition)
+                if (!eventEntity.IsWaitingListActive)
+                    throw new InvalidOperationException("L'événement est complet.");
+
                 int lastPosition = eventEntity.Registrations
                     .Where(r => r.WaitingPosition != null)
                     .Select(r => r.WaitingPosition!.Value)
@@ -59,7 +68,6 @@ namespace EventAssos.Application.Services.Data
             }
 
             await _registrationRepository.AddAsync(registration);
-
             return registration;
         }
 
@@ -75,33 +83,53 @@ namespace EventAssos.Application.Services.Data
             if (registration == null)
                 throw new KeyNotFoundException("Registration not found");
 
-            bool wasActive = registration.WaitingPosition == null;
+            // On stocke les infos avant suppression
+            int? removedPosition = registration.WaitingPosition;
+            bool wasActive = (removedPosition == null);
 
+            // 1. Supprimer l'inscription
             await _registrationRepository.DeleteAsync(registration.Id);
 
-            // promotion auto
             if (wasActive)
             {
-                var next = eventEntity.Registrations
+                // 2. PROMOTION : Si un membre actif part, le 1er de la liste d'attente monte
+                var nextInLine = eventEntity.Registrations
                     .Where(r => r.WaitingPosition != null)
                     .OrderBy(r => r.WaitingPosition)
                     .FirstOrDefault();
 
-                if (next != null)
+                if (nextInLine != null)
                 {
-                    next.WaitingPosition = null;
+                    nextInLine.WaitingPosition = null;
+                    await _registrationRepository.UpdateAsync(nextInLine);
 
-                    // recalcul des positions
-                    var waitingList = eventEntity.Registrations
-                        .Where(r => r.WaitingPosition != null)
+                    // 3. RECALCUL : On fait remonter tous les autres
+                    var remainingWaiting = eventEntity.Registrations
+                        .Where(r => r.WaitingPosition != null && r.Id != nextInLine.Id)
                         .OrderBy(r => r.WaitingPosition)
                         .ToList();
 
-                    int position = 1;
-                    foreach (var r in waitingList)
+                    int newPos = 1;
+                    foreach (var r in remainingWaiting)
                     {
-                        r.WaitingPosition = position++;
+                        r.WaitingPosition = newPos++;
+                        await _registrationRepository.UpdateAsync(r);
                     }
+                }
+            }
+            else
+            {
+                // 4. RÉORGANISATION : Si c'est quelqu'un en liste d'attente qui part,
+                // on décale seulement ceux qui étaient derrière lui.
+                var peopleBehind = eventEntity.Registrations
+                    .Where(r => r.WaitingPosition > removedPosition)
+                    .OrderBy(r => r.WaitingPosition)
+                    .ToList();
+
+                foreach (var r in peopleBehind)
+                {
+                    r.WaitingPosition--;
+                    await _registrationRepository.UpdateAsync(r);
                 }
             }
         }

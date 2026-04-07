@@ -7,12 +7,14 @@ namespace EventAssos.Infrastructure.Repositories
 {
     public class EventRepository : BaseRepository<Event, Guid>, IEventRepository
     {
+        // On utilise directement le contexte du BaseRepository s'il est protégé, 
+        // sinon on garde l'injection locale.
         private readonly EventAssosContext _context;
 
         public EventRepository(EventAssosContext context)
             : base(context)
         {
-            _context = context; // Initialisation du contexte
+            _context = context;
         }
 
         // Récupère un Event avec toutes ses inscriptions et les membres associés
@@ -33,21 +35,32 @@ namespace EventAssos.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        // Nombre d'inscrits actifs pour un event
+        // CORRECTION : Nombre d'inscrits actifs (WaitingPosition est NULL)
         public async Task<int> GetParticipantCountAsync(Guid eventId)
         {
             return await _context.Set<Registration>()
-                .Where(r => r.EventId == eventId && r.WaitingPosition == 0)
+                .Where(r => r.EventId == eventId && r.WaitingPosition == null)
                 .CountAsync();
         }
 
-        // Liste des membres inscrits (pour notifications)
+        // CORRECTION : Liste des membres inscrits actifs (WaitingPosition est NULL)
         public async Task<IEnumerable<Member>> GetRegisteredMembersAsync(Guid eventId)
         {
             return await _context.Set<Registration>()
-                .Where(r => r.EventId == eventId && r.WaitingPosition == 0)
+                .Where(r => r.EventId == eventId && r.WaitingPosition == null)
                 .Include(r => r.Member)
-                .Select(r => r.Member)
+                .Select(r => r.Member!) // Utilisation du ! pour le null-forgiving si nécessaire
+                .ToListAsync();
+        }
+
+        // OPTIONNEL : Liste d'attente uniquement
+        public async Task<IEnumerable<Member>> GetWaitingListMembersAsync(Guid eventId)
+        {
+            return await _context.Set<Registration>()
+                .Where(r => r.EventId == eventId && r.WaitingPosition != null)
+                .OrderBy(r => r.WaitingPosition)
+                .Include(r => r.Member)
+                .Select(r => r.Member!)
                 .ToListAsync();
         }
     }

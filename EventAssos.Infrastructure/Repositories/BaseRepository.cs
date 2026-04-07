@@ -9,8 +9,7 @@ namespace EventAssos.Infrastructure.Repositories
         where TEntity : class
         where TKey : struct
     {
-
-        protected DbSet<TEntity> _entities = _context.Set<TEntity>();
+        protected readonly DbSet<TEntity> _entities = _context.Set<TEntity>();
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
@@ -36,12 +35,14 @@ namespace EventAssos.Infrastructure.Repositories
 
         public async Task<bool> ExistsAsync(TKey id)
         {
-            return await Task.FromResult(_entities.Find(id) != null);
+            // Utilisation de AnyAsync pour rester purement asynchrone sans charger l'entité
+            return await _entities.AnyAsync(e => EF.Property<TKey>(e, "Id").Equals(id));
         }
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Task.FromResult(_entities.Where(predicate).AsEnumerable());
+            // CORRECTION : ToListAsync pour filtrer CÔTÉ BASE DE DONNÉES
+            return await _entities.Where(predicate).ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -54,12 +55,18 @@ namespace EventAssos.Infrastructure.Repositories
             return await _entities.FindAsync(id);
         }
 
+        // Surcharge pratique pour ton service (quand tu as déjà l'objet en main)
+        public async Task UpdateAsync(TEntity entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(TKey id, TEntity entity)
         {
+            // On s'assure que l'entité est bien attachée
             _entities.Update(entity);
             await _context.SaveChangesAsync();
         }
     }
-    
 }
-
