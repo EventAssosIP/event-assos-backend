@@ -5,16 +5,13 @@ namespace EventAssos.Infrastructure.DataBase.Context
 {
     public class EventAssosContext : DbContext
     {
-        // Utiliser le type générique pour EF Core
         public EventAssosContext(DbContextOptions<EventAssosContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Member> Members { get; set; } = null!; // nullable désactivé, EF Core s'attend à ce que ce soit initialisé
-
+        public DbSet<Member> Members { get; set; } = null!;
         public DbSet<Event> Events { get; set; } = null!;
-
         public DbSet<Registration> Registrations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,29 +19,36 @@ namespace EventAssos.Infrastructure.DataBase.Context
             // Applique toutes les configurations de l'assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EventAssosContext).Assembly);
 
-            // Exemple : valeur par défaut pour CreatedAt et Role sur Member
+            // --- CONFIGURATION MEMBER ---
             modelBuilder.Entity<Member>(entity =>
             {
                 entity.Property(m => m.CreatedAt)
-                      .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
+                      .HasDefaultValueSql("GETUTCDATE()");
 
                 entity.Property(m => m.Role)
                       .HasDefaultValue(Domain.Enums.Role.User);
             });
 
+            // --- CONFIGURATION EVENT ---
             modelBuilder.Entity<Event>(entity =>
             {
                 entity.Property(e => e.CreatedAt)
-                      .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
+                      .HasDefaultValueSql("GETUTCDATE()");
 
                 entity.Property(e => e.Status)
                       .HasDefaultValue(Domain.Enums.EventStatus.InProgress);
+
+                // AJOUT : Configuration du RowVersion pour la concurrence optimiste (Isolation ACID)
+                // Cela évite d'ajouter des attributs [Timestamp] dans ton projet Domaine (POCO)
+                entity.Property(e => e.RowVersion)
+                      .IsRowVersion();
             });
 
+            // --- CONFIGURATION REGISTRATION ---
             modelBuilder.Entity<Registration>(entity =>
             {
                 entity.Property(e => e.RegisteredAt)
-                      .HasDefaultValueSql("GETUTCDATE()"); // SQL Server UTC now
+                      .HasDefaultValueSql("GETUTCDATE()");
 
                 entity.Property(e => e.IsConfirmed)
                       .HasDefaultValue(false);
