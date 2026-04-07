@@ -1,9 +1,10 @@
 using EventAssos.API.Extentions;
 using EventAssos.API.Scalar;
 using EventAssos.Application.Interfaces.Services;
-using EventAssos.Application.Interfaces.Services.Tools;
 using EventAssos.Application.Services;
 using EventAssos.Infrastructure;
+using EventAssos.Infrastructure.DataBase;
+using EventAssos.Infrastructure.DataBase.Context;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -86,7 +87,27 @@ app.UseAuthorization();                     // Autorisation
 // ----------------------------
 app.MapControllers();
 
-// ----------------------------
+// ---------------------------------------------------------
+// Seeding (Exécuté une seule fois au démarrage)
+// ---------------------------------------------------------
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<EventAssosContext>();
+        // On appelle ton initialiseur que tu as placé dans Infrastructure
+        DbInitializer.Seed(context);
+    }
+    catch (Exception ex)
+    {
+        // On récupère le logger par défaut de .NET pour voir l'erreur en console
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Une erreur est survenue lors du remplissage initial (Seed) de la base de données.");
+    }
+}
+
+// ---------------------------------------------------------
 // Run
-// ----------------------------
+// ---------------------------------------------------------
 app.Run();
