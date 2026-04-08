@@ -28,7 +28,7 @@ namespace EventAssos.Infrastructure.DataBase
                         Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                         Pseudo = "AdminMaster",
                         EmailAddress = EmailAddress.Create("admin@test.com"),
-                        // Utilisation du constructeur de ton VO PasswordHash
+                        // Utilisation du constructeur du VO PasswordHash
                         Password = new PasswordHash(hashedResult),
                         Birthdate = new DateOnly(1990, 1, 1),
                         Gender = Gender.Other,
