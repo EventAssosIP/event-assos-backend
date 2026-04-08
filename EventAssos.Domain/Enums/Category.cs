@@ -5,6 +5,7 @@
         Concert = 0,
         Conference = 1,
         Atelier = 2,
-        Other = 3,
+        Workshop = 3,
+        Other = 4,
     }
 }
