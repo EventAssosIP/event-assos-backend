@@ -17,7 +17,7 @@
 
                     // 3.  Configuration avec une liste d'origines autorisées depuis l'appsettings (recommandé)
 
-                    policy.WithOrigins(allowedOrigins ?? Array.Empty<string>())
+                    policy.WithOrigins(allowedOrigins)
                                .AllowAnyHeader()
                                .AllowAnyMethod()
                                .AllowCredentials();

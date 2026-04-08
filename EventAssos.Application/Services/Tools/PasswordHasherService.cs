@@ -14,7 +14,7 @@ namespace EventAssos.Application.Services.Tools
         private const int MemorySize = 65536;         // 64 MB de RAM utilisée
         private const int DegreeOfParallelism = 2;    // Nombre de threads parallèles
 
-        public string HashPassword(PasswordHash password)
+        public string HashPassword(string password)
         {
             byte[] salt = RandomNumberGenerator.GetBytes(SaltSize);
             byte[] hash = HashPasswordWithSalt(password, salt);
@@ -27,7 +27,7 @@ namespace EventAssos.Application.Services.Tools
             return Convert.ToBase64String(combined);
         }
 
-        private byte[] HashPasswordWithSalt(PasswordHash password, byte[] salt)
+        private byte[] HashPasswordWithSalt(string password, byte[] salt)
         {
             using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password.ToString()))
             {
@@ -40,7 +40,7 @@ namespace EventAssos.Application.Services.Tools
             return argon2.GetBytes(HashSize);
         }
 
-        public bool VerifyPassword(PasswordHash password, PasswordHash storedPassword)
+        public bool VerifyPassword(string password, string storedPassword)
         {
             byte[] hashWithSalt = Convert.FromBase64String(storedPassword.ToString());
 

@@ -1,32 +1,21 @@
-﻿using EventAssos.Domain.Enums;
-using EventAssos.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EventAssos.Application.DTOs.Requests
 {
-    internal class AddMemberRequestDTO
+    public class AddMemberRequestDTO
     {
-        [Required]
-        public Guid Id { get; }
+        [Required(ErrorMessage = "Pseudonim is required !")]
+        public required string Pseudo { get; set; }
 
-        [Required(ErrorMessage = "Le pseudo est requis.")]
-        public string? Pseudo { get; private set; }
+        [Required(ErrorMessage = "Email is required !")]
+        public required string EmailAddress { get; set; }
 
-        [Required]
-        public EmailAddress? EmailAddress { get; private set; }
-
-        [Required]
-        public Password? Password { get; private set; }
+        [Required(ErrorMessage = "Password is required !")]
+        public required string Password { get; set; }
 
         public DateTime Birthdate { get; private set; }
 
-        public Gender Gender { get; private set; }
-
-        [Required]
-        public Role Role { get; private set; }
+        public string Gender { get; private set; } = null!;
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
+using EventAssos.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -25,28 +26,26 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
 
         builder.Property(m => m.Birthdate)
             .HasConversion(converter)
-            .HasColumnType("date");
-
-
+            .HasColumnType("Date");
 
         builder.Property(m => m.Gender)
             .HasConversion<string>() // lisible en DB
-            .HasDefaultValue(Gender.Male);
+            .HasDefaultValue(Gender.Other);
 
         builder.Property(m => m.Role)
-            .HasConversion<string>()
-            .HasDefaultValue(Role.User);
+            .HasConversion<string>();
 
-        builder.OwnsOne(m => m.EmailAddress, email =>
-        {
-            email.Property(e => e.Value)
-                .HasColumnName("Email")
-                .IsRequired()
-                .HasMaxLength(255);
+        builder.Property(m => m.EmailAddress)
+            .HasConversion(
+                v => v.Value,                 // vers DB (string)
+                v => EmailAddress.Create(v)) // vers domaine (VO)
+            .HasColumnName("Email")
+            .IsRequired()
+            .HasMaxLength(255);
 
-            email.HasIndex(e => e.Value)
-                .IsUnique(); // UNIQUE EMAIL
-        });
+        builder.HasIndex(m => m.EmailAddress)
+            .IsUnique();
+
 
         builder.OwnsOne(m => m.Password, password =>
         {
@@ -55,6 +54,7 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
                 .IsRequired();
         });
 
-        builder.HasIndex("Email"); // index pour login
+        builder.Property(m => m.CreatedAt)
+            .IsRequired();
     }
 }

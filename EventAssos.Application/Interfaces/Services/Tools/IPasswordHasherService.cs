@@ -4,7 +4,7 @@ namespace EventAssos.Application.Interfaces.Services.Tools
 { 
     public interface IPasswordHasherService
     {
-        string HashPassword(PasswordHash password);
-        bool VerifyPassword(PasswordHash password, PasswordHash storedPassword);
+        string HashPassword(string password);
+        bool VerifyPassword(string password, string storedPassword);
     }
 }

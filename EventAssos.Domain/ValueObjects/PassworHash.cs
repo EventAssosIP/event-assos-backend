@@ -9,4 +9,6 @@
 
         Value = value;
     }
+
+    public override string ToString() => Value;
 }

@@ -19,7 +19,7 @@ namespace EventAssos.API.Controllers
 
                 return CreatedAtAction(
                     actionName: "GetMember",
-                    controllerName: "Member",
+                    controllerName: "Members",
                     routeValues: new { id = createdMember.Id },
                     value: createdMember
                     );

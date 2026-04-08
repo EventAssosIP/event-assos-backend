@@ -1,6 +1,5 @@
 ﻿using EventAssos.Domain.Enums;
 using EventAssos.Domain.ValueObjects;
-using System.ComponentModel.DataAnnotations;
 
 namespace EventAssos.Domain.Entities
 {
@@ -8,20 +7,29 @@ namespace EventAssos.Domain.Entities
     {
         public Guid Id { get; set; }
 
-        [Required]
-        public required string Pseudo { get; set; } = null!;
+        public required string Pseudo { get; set; }
 
-        [Required]
         public required EmailAddress EmailAddress { get; set; }
 
-        [Required]
         public required PasswordHash Password { get; set; }
 
         public DateOnly Birthdate { get; set; }
 
         public Gender Gender { get; set; }
 
-        [Required]
-        public required Role Role { get; set; }
+        public required Role Role { get; set; } = Role.User;
+
+        public required DateTime CreatedAt { get; set; }
+
+
+        private readonly List<Registration> _registrations = new();
+        public IReadOnlyCollection<Registration> Registrations => _registrations;
+
+        // Propriété pour EF
+        public string EmailAddressValue
+        {
+            get => EmailAddress.Value;
+            private set => EmailAddress = EmailAddress.Create(value);
+        }
     }
 }
