@@ -19,18 +19,19 @@ namespace EventAssos.Application.Services.Auth
             // Création des claims (informations sur l'utilisateur)
             var claims = new[]
             {
-            // Claims standard
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Sub, member.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, member.EmailAddress.Value),
+                // Claims standard
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, member.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, member.EmailAddress.Value),
 
-            // Claims personnalisés
-            new Claim("role", member.Role.ToString()!)
-        };
+                // Utilisation des types standards pour l'ID et le Rôle
+                new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
+                new Claim(ClaimTypes.Role, member.Role.ToString()!)
+            };
 
             // Génération du JWT Token
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey!));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); // HmacSha256 a besoin de 256 bits (32 caractères)
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
