@@ -48,7 +48,11 @@ builder.Services.AddCors(options =>
 // JWT Authentication & Authorization
 // ----------------------------
 builder.Services.ConfigureJwTAuthentication(builder.Configuration);
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    // Le nom ici DOIT être identique à celui dans l'attribut [Authorize]
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 
 // ----------------------------
 // Controllers & OpenAPI / Scalar
