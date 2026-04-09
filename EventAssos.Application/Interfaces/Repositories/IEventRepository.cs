@@ -6,10 +6,14 @@ namespace EventAssos.Application.Interfaces.Repositories
     {
         Task<IEnumerable<Event>> GetAllWithRegistrationsAsync();
 
+        Task<IEnumerable<Event>> GetByEventCategoryAsync(string categoryName);
+
         Task<Event?> GetByIdWithRegistrationsAsync(Guid eventId);
 
         Task<int> GetParticipantCountAsync(Guid eventId);
 
         Task<IEnumerable<Member>> GetRegisteredMembersAsync(Guid eventId);
+
+        Task<IEnumerable<Member>> GetWaitingListMembersAsync(Guid eventId);
     }
 }

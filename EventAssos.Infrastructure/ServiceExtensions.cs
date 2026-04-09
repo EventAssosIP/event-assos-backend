@@ -18,21 +18,26 @@ namespace EventAssos.Infrastructure
 
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IEventCategoryRepository, EventCategoryRepository>();
             services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 
-            // Ajout du EmailService
-            var smtpConfig = configuration.GetSection("Smtp");
+            // EmailService
+            var smtpSection = configuration.GetSection("Smtp");
 
-            services.AddScoped<IEmailService>(sp =>
-                new SmtpEmailService(
-                    smtpConfig["Host"]!,
-                    int.Parse(smtpConfig["Port"]!),
-                    smtpConfig["User"]!,
-                    smtpConfig["Pass"]!,
-                    smtpConfig["FromEmail"]!,
-                    smtpConfig["FromName"]!
-                )
-            );
+            // On vérifie que la section existe pour éviter un crash silencieux
+            if (smtpSection.Exists())
+            {
+                services.AddScoped<IEmailService>(sp =>
+                    new SmtpEmailService(
+                        smtpSection["Host"] ?? "localhost",
+                        int.Parse(smtpSection["Port"] ?? "587"),
+                        smtpSection["User"] ?? "",
+                        smtpSection["Pass"] ?? "",
+                        smtpSection["FromEmail"] ?? "no-reply@eventassos.com",
+                        smtpSection["FromName"] ?? "Event Assos"
+                    )
+                );
+            }
         }
     }
 }

@@ -5,10 +5,7 @@ using EventAssos.Domain.Enums;
 
 namespace EventAssos.Application.Services.Data
 {
-    public class EventService(
-        IEventRepository _eventRepository,
-        IEmailService _emailService
-    ) : IEventService
+    public class EventService(IEventRepository _eventRepository, IEmailService _emailService) : IEventService
     {
         // ==========================
         // CREATE
@@ -81,7 +78,7 @@ namespace EventAssos.Application.Services.Data
             existingEvent.RegistrationDeadline = updatedEvent.RegistrationDeadline;
             existingEvent.UpdatedAt = DateTime.UtcNow;
 
-            await _eventRepository.UpdateAsync(id, existingEvent);
+            await _eventRepository.UpdateAsync(existingEvent);
 
             if (keyInfoChanged)
             {

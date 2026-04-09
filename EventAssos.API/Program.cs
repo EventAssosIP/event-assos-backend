@@ -26,9 +26,9 @@ builder.Services.AddScoped<IEmailService>(sp =>
 );
 
 // ----------------------------
-// Services Core & Infrastructure
+// Services Application & Infrastructure
 // ----------------------------
-builder.Services.ConfigureCore();
+builder.Services.ConfigureApplication();
 builder.Services.ConfigureInfrastructure(builder.Configuration);
 
 // ----------------------------

@@ -6,11 +6,17 @@ namespace EventAssos.Application.Services.Data
 {
     public class MemberService(IMemberRepository _memberRepository) : IMemberService
     {
+        // ==========================
+        // CREATE
+        // ==========================
         public Task<Member> CreateAsync(Member member)
         {
             throw new NotImplementedException();
         }
 
+        // ==========================
+        // DALETE
+        // ==========================
         public async Task DeleteAsync(Guid id)
         {
             var existingMember = await _memberRepository.ExistsAsync(id);
@@ -18,20 +24,29 @@ namespace EventAssos.Application.Services.Data
             await _memberRepository.DeleteAsync(id);
         }
 
+        // ==========================
+        // GET ALL
+        // ==========================
         public async Task<IEnumerable<Member>> GetAllAsync()
         {
             return await _memberRepository.GetAllAsync();
         }
 
+        // ==========================
+        // GET BY ID
+        // ==========================
         public async Task<Member?> GetByIdAsync(Guid id)
         {
             return await _memberRepository.GetByIdAsync(id);
             throw new NotImplementedException();
         }
 
+        // ==========================
+        // UPDATE
+        // ==========================
         public async Task UpdateAsync(Guid id, Member member)
         {
-            await _memberRepository.UpdateAsync(id, member);
+            await _memberRepository.UpdateAsync(member);
         }
     }
 }

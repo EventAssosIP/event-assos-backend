@@ -45,43 +45,61 @@ namespace EventAssos.Infrastructure.DataBase
                 );
             }
 
-            if (!context.Events.Any())
+            if(!context.EventCategories.Any())
             {
-                context.Events.AddRange(
-                    new Event
+                context.EventCategories.AddRange(
+                    new EventCategory
                     {
-                        Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                        Name = "Atelier .NET",
-                        Description = "Ouvert aux inscriptions",
-                        Location = "Namur",
-                        StartDate = DateTime.UtcNow.AddDays(10),
-                        EndDate = DateTime.UtcNow.AddDays(10).AddHours(2),
-                        Category = Category.Workshop,
-                        MinParticipants = 1,
-                        MaxParticipants = 10,
-                        Status = EventStatus.InProgress,
-                        IsWaitingListActive = true,
-                        RegistrationDeadline = DateTime.UtcNow.AddDays(9),
-                        UpdatedAt = DateTime.UtcNow
+                        Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                        Name = "Workshop",
                     },
-                    new Event
+
+                    new EventCategory
                     {
-                        Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                        Name = "Conférence (Full)",
-                        Description = "Pour tester la liste d'attente",
-                        Location = "Online",
-                        StartDate = DateTime.UtcNow.AddDays(5),
-                        EndDate = DateTime.UtcNow.AddDays(5).AddHours(1),
-                        Category = Category.Conference,
-                        MinParticipants= 1,
-                        MaxParticipants = 1, // Limité à 1 !
-                        Status = EventStatus.InProgress,
-                        IsWaitingListActive = true,
-                        RegistrationDeadline = DateTime.UtcNow.AddDays(4),
-                        UpdatedAt = DateTime.UtcNow
+                        Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                        Name = "Conference",
                     }
                 );
+                
             }
+
+            //if (!context.Events.Any())
+            //{
+            //    context.Events.AddRange(
+            //        new Event
+            //        {
+            //            Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+            //            Name = "Atelier .NET",
+            //            Description = "Ouvert aux inscriptions",
+            //            Location = "Namur",
+            //            StartDate = DateTime.UtcNow.AddDays(10),
+            //            EndDate = DateTime.UtcNow.AddDays(10).AddHours(2),
+            //            Category = EventCategory.Workshop,
+            //            MinParticipants = 1,
+            //            MaxParticipants = 10,
+            //            Status = EventStatus.InProgress,
+            //            IsWaitingListActive = true,
+            //            RegistrationDeadline = DateTime.UtcNow.AddDays(9),
+            //            UpdatedAt = DateTime.UtcNow
+            //        },
+            //        new Event
+            //        {
+            //            Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+            //            Name = "Conférence (Full)",
+            //            Description = "Pour tester la liste d'attente",
+            //            Location = "Online",
+            //            StartDate = DateTime.UtcNow.AddDays(5),
+            //            EndDate = DateTime.UtcNow.AddDays(5).AddHours(1),
+            //            Category = EventCategory.Conference,
+            //            MinParticipants= 1,
+            //            MaxParticipants = 1, // Limité à 1 !
+            //            Status = EventStatus.InProgress,
+            //            IsWaitingListActive = true,
+            //            RegistrationDeadline = DateTime.UtcNow.AddDays(4),
+            //            UpdatedAt = DateTime.UtcNow
+            //        }
+            //    );
+            //}
 
             context.SaveChanges();
         }

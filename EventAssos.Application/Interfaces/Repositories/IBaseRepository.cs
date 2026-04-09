@@ -4,16 +4,16 @@ public interface IBaseRepository<TEntity, TKey>
     where TEntity : class
     where TKey : struct
 {
-    // --- Méthodes de lecture (inchangées) ---
+    // --- Méthodes de lecture ---
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity?> GetByIdAsync(TKey id);
     Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
     Task<bool> ExistsAsync(TKey id);
     Task<int> CountAsync();
 
-    // --- Méthodes d'écriture immédiate (pour garder l'existant) ---
+    // --- Méthodes d'écriture immédiate ---
     Task<TEntity> AddAsync(TEntity entity);
-    Task UpdateAsync(TKey id, TEntity entity);
+    Task UpdateAsync(TEntity entity);
     Task DeleteAsync(TKey id);
 
     // --- AJOUTS POUR UNIT OF WORK (Préparation sans sauvegarde) ---

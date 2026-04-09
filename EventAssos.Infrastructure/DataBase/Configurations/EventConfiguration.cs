@@ -29,21 +29,24 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(e => e.EndDate)
             .HasColumnType("datetime2");
 
-        builder.Property(e => e.Category)
-               .HasConversion<string>()
-               .HasDefaultValue(Category.Other);
+        // --- RELATION AVEC CATEGORY ---
+        // On configure la relation ici (ou dans CategoryConfiguration, mais pas les deux)
+        builder.HasOne(e => e.Category)
+               .WithMany(c => c.Events)
+               .HasForeignKey(e => e.CategoryId)
+               .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(e => new { e.Category, e.StartDate });
+        builder.HasIndex(e => new { e.CategoryId, e.StartDate });
 
         builder.Property(e => e.MinParticipants)
             .IsRequired();
 
         builder.Property(e => e.MaxParticipants)
-            .IsRequired();      
+            .IsRequired();
 
         builder.Property(e => e.Status)
             .HasConversion<string>()
-            .HasDefaultValue(EventStatus.Pending);
+            .HasSentinel(EventStatus.Pending);
 
         builder.HasIndex(e => new { e.Status, e.StartDate });
 
@@ -56,5 +59,9 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
         builder.Property(e => e.UpdatedAt)
             .HasColumnType("datetime2");
+            
+        // N'oublie pas le RowVersion si tu veux qu'il soit géré explicitement
+        builder.Property(e => e.RowVersion)
+               .IsRowVersion();
     }
 }
