@@ -1,25 +1,26 @@
-﻿using EventAssos.Application.Interfaces.Repositories;
+﻿using EventAssos.Application.DTOs.Requests;
+using EventAssos.Application.Interfaces.Repositories;
 using EventAssos.Application.Interfaces.Services;
 using EventAssos.Domain.Entities;
 
 namespace EventAssos.Application.Services.Data
 {
-    internal class EventCategoryService(IEventCategoryRepository _eventCategoryRepository) : IEventCategoryService
+    public class EventCategoryService(IEventCategoryRepository _eventCategoryRepository) : IEventCategoryService
     {
         // ==========================
         // CREATE
         // ==========================
-        public async Task<EventCategory> CreateAsync(EventCategory newEventCategory)
+        public async Task<EventCategory> CreateAsync(EventCategory entity)
         {
-            if (string.IsNullOrWhiteSpace(newEventCategory.Name) || newEventCategory.Name.Trim().Length < 2)
+            if (string.IsNullOrWhiteSpace(entity.Name) || entity.Name.Trim().Length < 2)
             {
-                throw new ArgumentException("Name must contain at least 2 characters");
+                throw new ArgumentException("NAME_TOO_SHORT");
             }
 
-            newEventCategory.Id = Guid.NewGuid();
-            newEventCategory.Name = Capitalize(newEventCategory.Name);
+            entity.Id = Guid.NewGuid();
+            entity.Name = Capitalize(entity.Name);
 
-            return await _eventCategoryRepository.AddAsync(newEventCategory);
+            return await _eventCategoryRepository.AddAsync(entity);
         }
 
         // ==========================
@@ -27,10 +28,11 @@ namespace EventAssos.Application.Services.Data
         // ==========================
         public async Task DeleteAsync(Guid id)
         {
-            var exists = await _eventCategoryRepository.ExistsAsync(id);
-            if (!exists) throw new KeyNotFoundException("Event category not found");
+            // On récupère l'entité pour être cohérent avec la nouvelle approche
+            var category = await _eventCategoryRepository.GetByIdAsync(id);
+            if (category == null) throw new KeyNotFoundException("CATEGORY_NOT_FOUND");
 
-            await _eventCategoryRepository.DeleteAsync(id);
+            await _eventCategoryRepository.DeleteAsync(category);
         }
 
         // ==========================
@@ -52,23 +54,23 @@ namespace EventAssos.Application.Services.Data
         // ==========================
         // UPDATE
         // ==========================
-        public async Task UpdateAsync(Guid id, EventCategory entity)
+        public async Task UpdateAsync(Guid id, UpdateEventCategoryRequestDTO dto)
         {
-            var existingEventCategory = await _eventCategoryRepository.GetByIdAsync(id);
-            if (existingEventCategory == null)
-                throw new KeyNotFoundException("Event category not found");
+            var existingCategory = await _eventCategoryRepository.GetByIdAsync(id);
+            if (existingCategory == null)
+                throw new KeyNotFoundException("CATEGORY_NOT_FOUND");
 
-            if (!string.IsNullOrWhiteSpace(entity.Name))
+            // On ne met à jour que si le nom est fourni et non vide
+            if (!string.IsNullOrWhiteSpace(dto.Name))
             {
-                var name = entity.Name.Trim().ToLower();
-                existingEventCategory.Name = Capitalize(name);
+                existingCategory.Name = Capitalize(dto.Name);
             }
 
-            await _eventCategoryRepository.UpdateAsync(existingEventCategory);
+            await _eventCategoryRepository.UpdateAsync(existingCategory);
         }
 
         // ==========================
-        // METHODE TO CAPITALIZE
+        // HELPER
         // ==========================
         private string Capitalize(string input)
         {

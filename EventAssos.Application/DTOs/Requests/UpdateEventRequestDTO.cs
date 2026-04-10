@@ -4,25 +4,26 @@ namespace EventAssos.Application.DTOs.Requests
 {
     public class UpdateEventRequestDTO
     {
-        [Required(ErrorMessage = "Name is required !")]
+        // On enlève 'required' et on autorise null pour la mise à jour partielle
         [StringLength(100, MinimumLength = 3)]
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         [StringLength(1000)]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public string? Location { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        public string Category { get; set; } = string.Empty;
+        public Guid? CategoryId { get; set; } // Changé en Guid pour correspondre à ton entité
 
-        public int MinParticipants { get; set; }
+        public int? MinParticipants { get; set; }
 
-        public int MaxParticipants { get; set; }
+        public int? MaxParticipants { get; set; }
 
-        public bool WaitingListActive { get; set; }
+        public bool? WaitingListActive { get; set; }
 
-        public DateTime RegistrationDeadline { get; set; }
+        public DateTime? RegistrationDeadline { get; set; }
     }
 }

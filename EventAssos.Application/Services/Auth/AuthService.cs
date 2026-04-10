@@ -42,7 +42,8 @@ namespace EventAssos.Application.Services.Auth
                 EmailAddress = EmailAddress.Create(credentials.Email),
                 Password = new PasswordHash(hashedPassword),
                 Role = Role.User,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
 
             return await _memberRepository.AddAsync(member);

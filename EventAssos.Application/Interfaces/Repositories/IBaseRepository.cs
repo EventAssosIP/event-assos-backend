@@ -14,11 +14,12 @@ public interface IBaseRepository<TEntity, TKey>
     // --- Méthodes d'écriture immédiate ---
     Task<TEntity> AddAsync(TEntity entity);
     Task UpdateAsync(TEntity entity);
-    Task DeleteAsync(TKey id);
 
-    // --- AJOUTS POUR UNIT OF WORK (Préparation sans sauvegarde) ---
-    // Ces méthodes ne retournent pas de Task (ou seulement pour l'ajout async)
-    // car elles ne vont pas jusqu'à la base de données.
+    // CONSEIL : Garde les deux versions de Delete
+    Task DeleteAsync(TKey id);             // Utile si on a que l'ID
+    Task DeleteAsync(TEntity entity);      // AJOUT : Bien plus efficace si on a déjà l'objet (évite un Find interne dans EF)
+
+    // --- UNIT OF WORK ---
     Task AddToTrackerAsync(TEntity entity);
     void UpdateInTracker(TEntity entity);
     void DeleteFromTracker(TEntity entity);

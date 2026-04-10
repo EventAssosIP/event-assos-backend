@@ -30,7 +30,8 @@ namespace EventAssos.Infrastructure.DataBase
                         Password = new PasswordHash(hash),
                         Birthdate = new DateOnly(1990, 1, 1),
                         Role = Role.Admin,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
                     },
                     new Member
                     {
@@ -40,7 +41,8 @@ namespace EventAssos.Infrastructure.DataBase
                         Password = new PasswordHash(hash),
                         Birthdate = new DateOnly(1995, 5, 15),
                         Role = Role.User,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
                     }
                 );
             }

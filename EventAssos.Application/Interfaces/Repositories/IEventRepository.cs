@@ -4,6 +4,9 @@ namespace EventAssos.Application.Interfaces.Repositories
 {
     public interface IEventRepository : IBaseRepository<Event, Guid>
     {
+        // AJOUT : Nécessaire pour la nouvelle logique du Service (suppression par entité)
+        Task DeleteAsync(Event entity);
+
         Task<IEnumerable<Event>> GetAllWithRegistrationsAsync();
 
         Task<IEnumerable<Event>> GetByEventCategoryAsync(string categoryName);

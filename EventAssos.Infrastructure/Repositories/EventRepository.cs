@@ -61,6 +61,5 @@ namespace EventAssos.Infrastructure.Repositories
                 .Select(r => r.Member!)
                 .ToListAsync();
         }
-
     }
 }
