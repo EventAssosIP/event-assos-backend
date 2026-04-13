@@ -13,13 +13,18 @@ namespace EventAssos.Infrastructure.DataBase.Context
         public DbSet<Member> Members { get; set; } = null!;
         public DbSet<Event> Events { get; set; } = null!;
         public DbSet<Registration> Registrations { get; set; } = null!;
+        public DbSet<EventCategory> EventCategories { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // ==========================================
             // Applique toutes les configurations de l'assembly
+            // ==========================================
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EventAssosContext).Assembly);
 
-            // --- CONFIGURATION MEMBER ---
+            // ==========================================
+            // CONFIGURATION MEMBER
+            // ==========================================
             modelBuilder.Entity<Member>(entity =>
             {
                 entity.Property(m => m.CreatedAt)
@@ -29,7 +34,9 @@ namespace EventAssos.Infrastructure.DataBase.Context
                       .HasDefaultValue(Domain.Enums.Role.User);
             });
 
-            // --- CONFIGURATION EVENT ---
+            // ==========================================
+            // CONFIGURATION EVENT
+            // ==========================================
             modelBuilder.Entity<Event>(entity =>
             {
                 entity.Property(e => e.CreatedAt)
@@ -44,7 +51,9 @@ namespace EventAssos.Infrastructure.DataBase.Context
                       .IsRowVersion();
             });
 
-            // --- CONFIGURATION REGISTRATION ---
+            // ==========================================
+            // CONFIGURATION REGISTRATION
+            // ==========================================
             modelBuilder.Entity<Registration>(entity =>
             {
                 entity.Property(e => e.RegisteredAt)
@@ -52,6 +61,33 @@ namespace EventAssos.Infrastructure.DataBase.Context
 
                 entity.Property(e => e.IsConfirmed)
                       .HasDefaultValue(false);
+            });
+
+            // ==========================================
+            // CONFIGURATION EVENTCATEGORY
+            // ==========================================
+            modelBuilder.Entity<EventCategory>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+
+                // On rend le nom obligatoire et unique pour éviter les doublons
+                entity.Property(c => c.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasIndex(c => c.Name)
+                    .IsUnique();
+            });
+
+            // ==========================================
+            // RELATION EVENT <-> EVENTCATEGORY (One-To-Many)
+            // ==========================================
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.HasOne(e => e.Category)      // Un événement a une catégorie
+                    .WithMany(c => c.Events)        // Une catégorie a plusieurs événements
+                    .HasForeignKey(e => e.CategoryId) // La clé étrangère dans la table Event
+                    .OnDelete(DeleteBehavior.Restrict); // Empêche de supprimer une catégorie si elle est liée à des événements
             });
         }
     }

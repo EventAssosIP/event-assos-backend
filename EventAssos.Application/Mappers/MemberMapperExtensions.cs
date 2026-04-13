@@ -18,6 +18,7 @@ namespace EventAssos.Application.Mappers
                 Password = new PasswordHash(request.Password),
                 Role = Role.User,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
         }
 

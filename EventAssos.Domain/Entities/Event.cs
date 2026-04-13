@@ -7,6 +7,8 @@ namespace EventAssos.Domain.Entities
     {
         public Guid Id { get; set; }
 
+        public Guid CategoryId { get; set; } // FK
+
         public required string Name { get; set; }
 
         public string Description { get; set; } = string.Empty;
@@ -17,7 +19,7 @@ namespace EventAssos.Domain.Entities
 
         public DateTime EndDate { get; set; }
 
-        public Category Category { get; set; } = Category.Other;
+        public EventCategory Category { get; set; } = null!; // Navigation
 
         public required int MinParticipants { get; set; }
 
@@ -48,8 +50,6 @@ namespace EventAssos.Domain.Entities
         {
             UpdatedAt = DateTime.UtcNow;
         }
-
-        // --- FIN DES AJOUTS ---
 
         private readonly List<Registration> _registrations = new();
         public IReadOnlyCollection<Registration> Registrations => _registrations;

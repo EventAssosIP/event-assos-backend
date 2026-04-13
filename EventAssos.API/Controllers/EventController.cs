@@ -42,9 +42,28 @@ namespace EventAssos.API.Controllers
         }
 
         // ===============================
+        // POST: api/Events
+        // ===============================
+        [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<ActionResult<EventResponseDTO>> PostEvent([FromBody] AddEventRequestDTO request) // Vérifie le type ici
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            // On appelle la méthode ToEvent() définie dans ton mapper
+            var eventEntity = request.ToEvent();
+
+            // On passe l'entité au service
+            var result = await _eventService.CreateAsync(eventEntity);
+
+            // On utilise ton autre extension pour la réponse
+            return CreatedAtAction(nameof(GetEvent), new { id = result.Id }, result.ToEventResponseDTO());
+        }
+
+        // ===============================
         // PUT: api/Events/{id}
         // ===============================
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Policy = "AdminOnly")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,22 +73,28 @@ namespace EventAssos.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var Event = await _eventService.GetByIdAsync(id);
-            if (Event == null)
+            try
+            {
+                // On envoie directement le DTO (request) au service
+                await _eventService.UpdateAsync(id, request);
+
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound(new { Message = "Event not found" });
-
-            
-            Event.Name = request.Name;
-
-            await _eventService.UpdateAsync(id, Event);
-
-            return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                // Au cas où tes Value Objects (ex: EventDate) rejettent la donnée
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
         // ===============================
         // DELETE: api/Events/{id}
         // ===============================
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Policy = "AdminOnly")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

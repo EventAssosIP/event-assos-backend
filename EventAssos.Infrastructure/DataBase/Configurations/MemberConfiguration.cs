@@ -29,8 +29,7 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
             .HasColumnType("Date");
 
         builder.Property(m => m.Gender)
-            .HasConversion<string>() // lisible en DB
-            .HasDefaultValue(Gender.Other);
+            .HasConversion<string>(); // lisible en DB
 
         builder.Property(m => m.Role)
             .HasConversion<string>();

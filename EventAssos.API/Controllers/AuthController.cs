@@ -9,7 +9,6 @@ namespace EventAssos.API.Controllers
     [ApiController]
     public class AuthController(IAuthService _authService) : ControllerBase
     {
-
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterMemberRequestDTO request)
         {

@@ -10,11 +10,12 @@ namespace EventAssos.Application.Services;
 
 public static class ServiceExtensions
 {
-    public static void ConfigureCore(this IServiceCollection services)
+    public static void ConfigureApplication(this IServiceCollection services)
     {
         // Ajouter toutes les configurations liées au Core (ex: Services, etc.)
         services.AddScoped<IMemberService, MemberService>();
         services.AddScoped<IEventService, EventService>();
+        services.AddScoped<IEventCategoryService, EventCategoryService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IJwtService, JwtService>();
